@@ -1,0 +1,6 @@
+{
+  "name": "AcademiaHub Multi-Tenant School Portal",
+  "description": "Enterprise-grade multi-tenant academic resource portal with unified workflows for Students, Teachers, School Admins, and Platform Super Admins.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
