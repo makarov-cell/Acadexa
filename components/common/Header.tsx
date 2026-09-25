@@ -3,8 +3,7 @@ import {
   Sparkles,
   Building,
   ChevronDown,
-  Bell,
-  SlidersHorizontal,
+  Menu,
 } from 'lucide-react';
 import { SchoolTenant, UserProfile, UserRole } from '../../types.ts';
 
@@ -20,6 +19,7 @@ interface HeaderProps {
   onOpenOnboarding: () => void;
   onTogglePublicWebsite: () => void;
   isPublicMode: boolean;
+  onOpenMenu: () => void;
 }
 
 export function Header({
@@ -34,6 +34,7 @@ export function Header({
   onOpenOnboarding,
   onTogglePublicWebsite,
   isPublicMode,
+  onOpenMenu,
 }: HeaderProps) {
   const roleLabels: Record<UserRole, { label: string; icon: string; badge: string }> = {
     student: { label: 'Student', icon: '🎓', badge: 'bg-indigo-50 text-indigo-700 border-indigo-200' },
@@ -44,21 +45,31 @@ export function Header({
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-200">
-      <div className="flex items-center justify-between h-16 px-4 md:px-6">
-        {/* Zone 1: Single text element Brand Title */}
-        <div className="flex items-center gap-4">
-          <a
+      <div className="flex items-center justify-between h-16 px-3 md:px-6 gap-2">
+        {/* Zone 1: Menu toggle (mobile) + Brand */}
+        <div className="flex items-center gap-2 md:gap-4 min-w-0">
+          {!isPublicMode && (
+            <button
+              onClick={onOpenMenu}
+              className="md:hidden flex items-center justify-center w-9 h-9 shrink-0 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 cursor-pointer"
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          )}
+
+          
             href="#"
             onClick={(e) => {
               e.preventDefault();
               if (isPublicMode) onTogglePublicWebsite();
             }}
-            className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-2 whitespace-nowrap"
+            className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-2 whitespace-nowrap min-w-0"
           >
-            <span className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
+            <span className="w-8 h-8 shrink-0 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
               AH
             </span>
-            <span>AcademiaHub</span>
+            <span className="hidden xs:inline truncate">AcademiaHub</span>
           </a>
 
           {/* School Tenant Switcher (Multi-Tenant demonstration) */}
@@ -101,7 +112,7 @@ export function Header({
           </div>
         </div>
 
-        {/* Zone 2: Navigation Links & Live Role Simulator Controls */}
+        {/* Zone 2: Role Simulator (desktop only) */}
         <div className="hidden md:flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200">
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-2">
             Switch Role:
@@ -129,24 +140,25 @@ export function Header({
           })}
         </div>
 
-        {/* Zone 3: Primary Actions */}
-        <div className="flex items-center gap-2">
-          {/* Public Website Preview Toggle */}
+        {/* Zone 3: Primary Actions — icons only below sm, labels return at sm+ */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             onClick={onTogglePublicWebsite}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors border cursor-pointer ${
+            className={`flex items-center justify-center sm:justify-start w-9 h-9 sm:w-auto sm:px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors border cursor-pointer ${
               isPublicMode
                 ? 'bg-indigo-600 text-white border-indigo-600'
                 : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
             }`}
+            aria-label="Toggle public web view"
           >
-            {isPublicMode ? 'Exit Public View' : 'Public Web View'}
+            <Building className="w-3.5 h-3.5 sm:hidden" />
+            <span className="hidden sm:inline">{isPublicMode ? 'Exit Public View' : 'Public Web View'}</span>
           </button>
 
-          {/* Global Search Button */}
           <button
             onClick={onOpenSearch}
-            className="flex items-center gap-2 px-3 py-1.5 text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer"
+            className="flex items-center justify-center sm:justify-start gap-2 w-9 h-9 sm:w-auto sm:px-3 py-1.5 text-xs text-slate-500 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer"
+            aria-label="Search portal"
           >
             <Search className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Search portal...</span>
@@ -155,17 +167,16 @@ export function Header({
             </kbd>
           </button>
 
-          {/* Client Pitch Presentation Deck Trigger (Key for closing deals!) */}
           <button
             onClick={onOpenPitch}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-xs cursor-pointer whitespace-nowrap"
+            className="flex items-center justify-center sm:justify-start gap-1.5 w-9 h-9 sm:w-auto sm:px-3 py-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors shadow-xs cursor-pointer whitespace-nowrap"
+            aria-label="Client pitch mode"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Client Pitch Mode</span>
+            <span className="hidden sm:inline">Client Pitch Mode</span>
           </button>
 
-          {/* Active User Avatar */}
-          <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div className="hidden md:flex items-center gap-2 pl-2 border-l border-slate-200">
             <img
               src={currentUser.avatar}
               alt={currentUser.name}
