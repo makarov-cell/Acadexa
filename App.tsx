@@ -234,3 +234,182 @@ export default function App() {
             onSelectView={setCurrentView}
             selectedSubject={selectedSubject}
             onSelectSubject={setSelectedSubject}
+            unreadNoticesCount={unreadNoticesCount}
+            pendingAssignmentsCount={pendingAssignmentsCount}
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+          />
+
+          {/* Main Content Workspace */}
+          <main className="flex-1 overflow-y-auto p-4 md:p-8 max-w-7xl mx-auto w-full">
+            {/* 1. Dashboards */}
+            {currentView === 'dashboard' && (
+              <>
+                {activeRole === 'student' && (
+                  <StudentDashboard
+                    user={currentUser}
+                    resources={studyResources}
+                    assignments={assignments}
+                    quizzes={quizzes}
+                    notices={notices}
+                    events={events}
+                    onNavigate={handleNavigate}
+                    onSelectSubject={setSelectedSubject}
+                  />
+                )}
+                {activeRole === 'teacher' && (
+                  <TeacherDashboard
+                    user={currentUser}
+                    resources={studyResources}
+                    assignments={assignments}
+                    quizzes={quizzes}
+                    onNavigate={handleNavigate}
+                    selectedSubject={selectedSubject}
+                    onSelectSubject={setSelectedSubject}
+                  />
+                )}
+                {activeRole === 'admin' && (
+                  <AdminDashboard
+                    school={currentSchool}
+                    user={currentUser}
+                    onNavigate={handleNavigate}
+                    onUpdateSchoolSettings={handleUpdateSchoolSettings}
+                  />
+                )}
+                {activeRole === 'superadmin' && (
+                  <SuperAdminDashboard
+                    schools={schools}
+                    user={currentUser}
+                    onOpenOnboarding={() => setIsOnboardingOpen(true)}
+                    onToggleSchoolStatus={handleToggleSchoolStatus}
+                    onSelectSchool={handleSelectSchool}
+                  />
+                )}
+              </>
+            )}
+
+            {/* 2. Core Academic Modules */}
+            {(currentView === 'study_material' || currentView === 'bookmarks') && (
+              <StudyMaterialView
+                resources={
+                  currentView === 'bookmarks'
+                    ? studyResources.filter((r) => r.bookmarked)
+                    : studyResources
+                }
+                activeRole={activeRole}
+                selectedSubject={selectedSubject}
+                onSelectSubject={setSelectedSubject}
+                onAddResource={handleAddResource}
+                onToggleBookmark={handleToggleBookmark}
+              />
+            )}
+
+            {(currentView === 'assignments' || currentView === 'submissions') && (
+              <AssignmentsView
+                assignments={assignments}
+                activeRole={activeRole}
+                selectedSubject={selectedSubject}
+                onSubmitAssignment={handleSubmitAssignment}
+                onGradeAssignment={handleGradeAssignment}
+                onCreateAssignment={handleCreateAssignment}
+              />
+            )}
+
+            {currentView === 'quizzes' && (
+              <QuizView
+                quizzes={quizzes}
+                activeRole={activeRole}
+                selectedSubject={selectedSubject}
+                onCompleteQuiz={handleCompleteQuiz}
+                onCreateQuiz={handleCreateQuiz}
+              />
+            )}
+
+            {currentView === 'pyqs' && (
+              <PYQsView
+                pyqs={pyqs}
+                activeRole={activeRole}
+                selectedSubject={selectedSubject}
+                onSelectSubject={setSelectedSubject}
+                onAddPYQ={handleAddPYQ}
+              />
+            )}
+
+            {currentView === 'notices' && (
+              <NoticesView
+                notices={notices}
+                activeRole={activeRole}
+                onAddNotice={handleAddNotice}
+              />
+            )}
+
+            {currentView === 'calendar' && (
+              <CalendarView
+                events={events}
+                activeRole={activeRole}
+                onAddEvent={handleAddEvent}
+              />
+            )}
+
+            {currentView === 'important_links' && (
+              <LinksView
+                links={links}
+                activeRole={activeRole}
+                onAddLink={handleAddLink}
+              />
+            )}
+
+            {/* Admin and Super Admin Secondary Views */}
+            {['students', 'teachers', 'classes', 'subjects', 'content_audit', 'analytics', 'settings'].includes(
+              currentView
+            ) && (
+              <AdminDashboard
+                school={currentSchool}
+                user={currentUser}
+                onNavigate={handleNavigate}
+                onUpdateSchoolSettings={handleUpdateSchoolSettings}
+              />
+            )}
+
+            {['schools', 'subscriptions', 'platform_analytics', 'security_logs', 'support', 'platform_settings'].includes(
+              currentView
+            ) && (
+              <SuperAdminDashboard
+                schools={schools}
+                user={currentUser}
+                onOpenOnboarding={() => setIsOnboardingOpen(true)}
+                onToggleSchoolStatus={handleToggleSchoolStatus}
+                onSelectSchool={handleSelectSchool}
+              />
+            )}
+          </main>
+        </div>
+      )}
+
+      {/* Global Modals */}
+      <GlobalSearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        resources={studyResources}
+        assignments={assignments}
+        quizzes={quizzes}
+        pyqs={pyqs}
+        notices={notices}
+        onNavigateToItem={handleNavigate}
+      />
+
+      <ClientPitchModal
+        isOpen={isPitchOpen}
+        onClose={() => setIsPitchOpen(false)}
+        onSelectRole={handleSelectRole}
+        onOpenOnboarding={() => setIsOnboardingOpen(true)}
+      />
+
+      <OnboardingWizardModal
+        isOpen={isOnboardingOpen}
+        onClose={() => setIsOnboardingOpen(false)}
+        onSchoolCreated={handleSchoolCreated}
+      />
+    </div>
+  );
+}
