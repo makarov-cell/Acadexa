@@ -58,19 +58,18 @@ export function Header({
             </button>
           )}
 
-          
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
+          <button
+            type="button"
+            onClick={() => {
               if (isPublicMode) onTogglePublicWebsite();
             }}
-            className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-2 whitespace-nowrap min-w-0"
+            className="text-base font-bold tracking-tight text-slate-900 flex items-center gap-2 whitespace-nowrap min-w-0 cursor-pointer"
           >
             <span className="w-8 h-8 shrink-0 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
               AH
             </span>
             <span className="hidden xs:inline truncate">AcademiaHub</span>
-          </a>
+          </button>
 
           {/* School Tenant Switcher (Multi-Tenant demonstration) */}
           <div className="hidden lg:flex items-center gap-2 pl-3 border-l border-slate-200">
