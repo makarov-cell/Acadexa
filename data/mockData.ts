@@ -67,8 +67,8 @@ export const INITIAL_SCHOOLS: SchoolTenant[] = [
 export const INITIAL_USERS: Record<string, UserProfile> = {
   student: {
     id: 'usr_std_01',
-    name: 'Aarav Patel',
-    email: 'aarav.patel@apexacademy.edu',
+    name: 'kucu_puchu',
+    email: 'kuchu_puchu@rchs.edu',
     role: 'student',
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
     schoolId: 'school_apex',
