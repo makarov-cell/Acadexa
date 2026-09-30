@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import {
   UserRole,
   SchoolTenant,
@@ -410,6 +411,7 @@ export default function App() {
         onClose={() => setIsOnboardingOpen(false)}
         onSchoolCreated={handleSchoolCreated}
       />
+      <SpeedInsights />
     </div>
   );
 }
