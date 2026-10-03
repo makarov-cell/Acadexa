@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import {
   UserRole,
   SchoolTenant,
@@ -410,6 +411,7 @@ export default function App() {
         onClose={() => setIsOnboardingOpen(false)}
         onSchoolCreated={handleSchoolCreated}
       />
+      <Analytics />
     </div>
   );
 }
